@@ -1,0 +1,25 @@
+[package]
+name = "tog-runtime-modules"
+description = "Standard AppChain runtime modules: system, balances, cgmp and compute (TOG-SPEC-0007 §7)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[features]
+default = ["std"]
+std = ["borsh/std", "tog-runtime-core/std", "tog-types/std"]
+
+[dependencies]
+borsh = { version = "1", default-features = false, features = ["derive"] }
+tog-runtime-core = { path = "../tog-runtime-core", default-features = false }
+tog-runtime-macros = { path = "../tog-runtime-macros" }
+tog-types = { path = "../tog-types", default-features = false }
+
+[dev-dependencies]
+proptest.workspace = true
+tog-types = { path = "../tog-types", features = ["testing"] }
+
+[lints]
+workspace = true

@@ -1,0 +1,61 @@
+[package]
+name = "tog-types"
+description = "Consensus objects of the TOG compute market (TOG-SPEC-0001 §3)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+# Without default features the crate builds as no_std + alloc (for wasm32), and
+# nothing here pulls in an OS random source.
+tog-primitives = { path = "../tog-primitives", default-features = false }
+# The IBE mask hashes the pairing value's canonical Fp12 coefficients (TOG-SPEC-0009 §1.2):
+# `blst` (constant-time) computes it with `std`, arkworks without it (wasm32, no secrets there)
+# and in a test that checks the two agree.
+ark-bls12-381 = { version = "0.5", default-features = false, features = ["curve"] }
+ark-ec = { version = "0.5", default-features = false }
+ark-ff = { version = "0.5", default-features = false }
+blake3 = { version = "1", default-features = false }
+blst = { workspace = true, optional = true }
+bls12_381 = { version = "=0.8.0", default-features = false, features = ["alloc", "groups", "pairings"] }
+borsh = { version = "1", default-features = false, features = ["derive"] }
+chacha20 = { version = "0.9", default-features = false }
+chacha20poly1305 = { version = "0.10", default-features = false, features = ["alloc"] }
+ed25519-dalek = { version = "2", default-features = false }
+k256 = { version = "0.13", default-features = false, features = ["ecdsa"] }
+# hash-to-G2 without `std` (`ark-ff`'s field hasher, digest 0.10).
+sha2 = { version = "0.10", default-features = false }
+thiserror = { version = "2", default-features = false }
+zeroize = { version = "1", default-features = false }
+
+[features]
+default = ["std"]
+std = [
+    "tog-primitives/std",
+    "ark-bls12-381/std",
+    "ark-ec/std",
+    "ark-ff/std",
+    "blake3/std",
+    "dep:blst",
+    "bls12_381/default",
+    "borsh/std",
+    "chacha20poly1305/default",
+    "ed25519-dalek/default",
+    "k256/std",
+    "sha2/std",
+    "thiserror/std",
+]
+# Test fixtures for downstream crates.
+testing = []
+
+[lints]
+workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+# The fixtures, for the integration tests.
+tog-types = { path = ".", features = ["testing"] }
+jmt = { version = "0.12", features = ["mocks"] }
+serde_json = "1"

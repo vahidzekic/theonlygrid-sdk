@@ -1,0 +1,22 @@
+[package]
+name = "tog-runtime-test"
+description = "`tog test`'s harness: an AppChain runtime natively on in-memory state, with a simulated Hub, other chains and compute results (TOG-SPEC-0007 §10)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+borsh = { version = "1", features = ["derive"] }
+tog-runtime-core = { path = "../tog-runtime-core" }
+tog-runtime-modules = { path = "../tog-runtime-modules" }
+tog-types = { path = "../tog-types" }
+
+[dev-dependencies]
+proptest.workspace = true
+tog-runtime-template = { path = "../tog-runtime-template" }
+tog-types = { path = "../tog-types", features = ["testing"] }
+
+[lints]
+workspace = true

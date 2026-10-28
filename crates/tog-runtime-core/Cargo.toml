@@ -1,0 +1,25 @@
+[package]
+name = "tog-runtime-core"
+description = "no_std AppChain runtime framework: storage, weights, origins, dispatch (TOG-SPEC-0007 §3-§6)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[features]
+default = ["std"]
+std = ["borsh/std", "blake3/std", "tog-primitives/std", "tog-types/std"]
+
+[dependencies]
+blake3 = { version = "1", default-features = false }
+borsh = { version = "1", default-features = false, features = ["derive"] }
+tog-primitives = { path = "../tog-primitives", default-features = false }
+tog-types = { path = "../tog-types", default-features = false }
+
+[dev-dependencies]
+ed25519-dalek.workspace = true
+k256.workspace = true
+
+[lints]
+workspace = true

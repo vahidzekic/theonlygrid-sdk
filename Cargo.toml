@@ -1,0 +1,82 @@
+[workspace]
+resolver = "2"
+members = [
+  "crates/tog-primitives",
+  "crates/tog-types",
+  "crates/tog-runtime-core",
+  "crates/tog-runtime-io",
+  "crates/tog-runtime-macros",
+  "crates/tog-runtime-modules",
+  "crates/tog-runtime-test",
+  "crates/tog-runtime-template",
+  "crates/tog-runtime-template-compute",
+  "crates/tog-runtime-template-storage",
+  "crates/tog-runtime-template-reserved",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.80"
+license = "Apache-2.0"
+repository = "https://github.com/vahidzekic/theonlygrid-sdk"
+
+[workspace.dependencies]
+proptest = { version = "1", default-features = false, features = ["std"] }
+# `portable`: blst picks its ADX code at run time, not from the CPU that built it (a binary built
+# on a newer CPU died with SIGILL on an Ivy Bridge server).
+blst = { version = "0.3", features = ["portable"] }
+ed25519-dalek = "2"
+k256 = { version = "0.13", default-features = false, features = ["ecdsa", "std"] }
+tiny-keccak = { version = "2", features = ["keccak"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+
+# Runtime code traps on arithmetic overflow in release builds too, as it does in tests, rather than
+# wrapping silently (R-9). The Wasm a chain uploads is a release build.
+[profile.release.package.tog-runtime-core]
+overflow-checks = true
+
+[profile.release.package.tog-runtime-io]
+overflow-checks = true
+
+[profile.release.package.tog-runtime-modules]
+overflow-checks = true
+
+[profile.release.package.tog-runtime-template]
+overflow-checks = true
+
+[profile.release.package.tog-runtime-template-compute]
+overflow-checks = true
+
+[profile.release.package.tog-runtime-template-storage]
+overflow-checks = true
+
+[profile.release.package.tog-runtime-template-reserved]
+overflow-checks = true
+
+[profile.dev.package.bls12_381]
+opt-level = 3
+
+[profile.dev.package.curve25519-dalek]
+opt-level = 3
+
+[profile.dev.package.ed25519-dalek]
+opt-level = 3
+
+[profile.dev.package.sha2]
+opt-level = 3
+
+[profile.dev.package.tog-runtime-core]
+opt-level = 3
+
+[profile.dev.package.tog-types]
+opt-level = 3
+
+[profile.dev.package.blake3]
+opt-level = 3

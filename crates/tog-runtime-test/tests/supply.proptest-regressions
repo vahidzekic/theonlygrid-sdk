@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 80995436109e387f74b52d5e563fffb636e6a3b92553ef64ebd45a52377b15ef # shrinks to actions = [Withdraw { from: 0, amount: 1 }, Block, Answer { pick: 0, how: 141, charged: 0 }, Replay { pick: 33 }]

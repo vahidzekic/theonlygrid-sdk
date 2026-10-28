@@ -1,0 +1,27 @@
+[package]
+name = "tog-runtime-io"
+description = "Runtime side of the host ABI v1: storage, crypto, Hub context and CGMP through tog_v1 imports, the entry-point glue and the allocator (TOG-SPEC-0007 §3.1, §3.2)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[features]
+default = []
+# Install the bump allocator and panic handler. Enable only in the final runtime crate built for wasm32.
+runtime = []
+# The allocator and a trapping panic handler with no imports, for a verification-module blob (§7.2).
+pure = []
+
+[dependencies]
+borsh = { version = "1", default-features = false, features = ["derive"] }
+tog-runtime-core = { path = "../tog-runtime-core", default-features = false }
+
+# The host imports need `unsafe`; it is confined to `src/ffi.rs` and reviewed there.
+[lints.rust]
+unsafe_code = "deny"
+missing_docs = "warn"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }

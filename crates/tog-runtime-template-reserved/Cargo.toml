@@ -1,0 +1,29 @@
+[package]
+name = "tog-runtime-template-reserved"
+description = "AppChain SDK reserved-capacity template runtime: the template plus jobs that run on a Hub reservation the chain is the beneficiary of (TOG-SPEC-0007 §7.1, TOG-SPEC-0015)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+borsh = { version = "1", default-features = false, features = ["derive"] }
+tog-runtime-core = { path = "../tog-runtime-core", default-features = false }
+tog-runtime-io = { path = "../tog-runtime-io" }
+tog-runtime-modules = { path = "../tog-runtime-modules", default-features = false }
+tog-types = { path = "../tog-types", default-features = false }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+tog-runtime-io = { path = "../tog-runtime-io", features = ["runtime"] }
+
+[dev-dependencies]
+tog-runtime-test = { path = "../tog-runtime-test" }
+tog-types = { path = "../tog-types", features = ["testing"] }
+
+[lints]
+workspace = true

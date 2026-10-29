@@ -164,10 +164,10 @@ tog-collator --config collator.toml send --key owner.key fund-on-demand --amount
 
 `upload-code` šalje veliki runtime u više transakcija. Pre-check traje nekoliko Hub blokova. Posle
 `register-appchain`, `status` ispisuje `chain_registered=true`. Hub daje novom lancu sledeći slobodan
-id, bez obzira na to šta piše u spec-u. Zato pokrenite `status` neposredno pre `register-appchain` i
-proverite da je `next_chain_id` i dalje N. Ako je drugi tim u međuvremenu registrovao lanac, ponovo
-napišite spec sa novim id-jem M, postavite `chain_id = M` i tek onda registrujte; otpremljen kod
-ostaje.
+id, bez obzira na to šta piše u spec-u, pa `register-appchain` prvo proverava da je `next_chain_id`
+na Hub-u i dalje vaš `chain_id`. Ako je drugi tim u međuvremenu registrovao lanac, staje sa
+`the Hub's next chain id is M, not N: write the chain spec and chain_id again with it`: ponovo
+napišite spec sa M, postavite `chain_id = M` i ponovo registrujte; otpremljen kod ostaje.
 
 ## 7. Pokrenite kolator
 
@@ -312,6 +312,7 @@ troše on-demand balans. Odeljak 8 vodiča objašnjava obnove i cenu sledećeg p
 | faucet: `429`, `limited: try again in …` | jedan zahtev u 24 h po adresi i po IP adresi | sačekajte, ili zamolite člana tima koji već ima test-TOG da vam pošalje `transfer`-om |
 | `send upload-code` čeka 120 s i ne prolazi sa `… last publish: Duplicate` | baš ovaj kod je već na Hub-u | ako `status` pokazuje vaš `code_hash` sa `code_status=accepted`, to je vaše ranije otpremanje: nastavite sa `register-appchain`; inače promenite runtime, ili dajte lancu sopstveno ime u `tog new`, da mu se code hash razlikuje |
 | `code_status=rejected` | pre-check validatora je odbio Wasm | `tog build --release` lokalno pokreće istu proveru i kaže zašto |
+| `register-appchain`: `the Hub's next chain id is M, not N` | drugi lanac je registrovan pošto ste napisali spec | napišite spec sa M i postavite `chain_id = M` (korak 6), pa ponovo registrujte |
 | `chain_registered=false` posle uključenog `register-appchain` | drugi lanac je registrovan pošto ste napisali spec, pa je Hub vašem dao sledeći slobodan id | `status` pokazuje `next_chain_id`; pitajte operatere testneta koji id je vaš lanac dobio, pa napišite spec i `chain_id` za njega (korak 6) |
 | `collator=not_registered` | `register-collator` još nije uključen, ili je poslat drugim ključem | korak 7, sa ključem navedenim u `collator =` |
 | `collator=no_coretime`, `final_number` stoji | on-demand balans je ispod `od_price` | `fund-on-demand`; lanac nastavlja sam |

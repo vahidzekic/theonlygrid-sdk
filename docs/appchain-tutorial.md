@@ -163,9 +163,10 @@ tog-collator --config collator.toml send --key owner.key fund-on-demand --amount
 
 `upload-code` sends a large runtime in several transactions. The pre-check takes a few Hub blocks.
 After `register-appchain`, `status` prints `chain_registered=true`. The Hub gives a new chain the
-next free id, whatever the spec says. So run `status` right before `register-appchain` and check
-that `next_chain_id` is still N. If another team registered in between, write the spec again with
-the new id M, set `chain_id = M`, and only then register; the uploaded code stays.
+next free id, whatever the spec says, so `register-appchain` first checks that the Hub's
+`next_chain_id` is still your `chain_id`. If another team registered in between, it stops with
+`the Hub's next chain id is M, not N: write the chain spec and chain_id again with it`: write the
+spec again with M, set `chain_id = M`, and register again; the uploaded code stays.
 
 ## 7. Start the collator
 
@@ -311,6 +312,7 @@ next period's price.
 | faucet: `429`, `limited: try again in …` | one drip per 24 h per address and per IP | wait, or ask a team member who already has test-TOG to `transfer` some |
 | `send upload-code` waits 120 s and fails with `… last publish: Duplicate` | this exact code is already on the Hub | if `status` shows your `code_hash` with `code_status=accepted`, it is your own earlier upload: go on with `register-appchain`; otherwise change the runtime, or give the chain its own name in `tog new`, so its code hash differs |
 | `code_status=rejected` | the validators' pre-check refused the Wasm | `tog build --release` runs the same check locally and says why |
+| `register-appchain`: `the Hub's next chain id is M, not N` | another chain registered since you wrote the spec | write the spec with M and set `chain_id = M` (step 6), then register again |
 | `chain_registered=false` after `register-appchain` was included | another chain registered since you wrote the spec, and the Hub gave yours the next free id | `status` shows `next_chain_id`; ask the testnet's operators which id your chain got, then write the spec and `chain_id` for it (step 6) |
 | `collator=not_registered` | `register-collator` not included yet, or sent with a different key | step 7, with the key named in `collator =` |
 | `collator=no_coretime`, `final_number` stops | the on-demand balance is below `od_price` | `fund-on-demand`; the chain resumes by itself |

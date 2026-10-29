@@ -48,8 +48,8 @@ cd mychain
 ```
 
 `tog new` writes a Cargo workspace: `runtime/src/lib.rs` (the runtime), `runtime/src/weights.rs`
-(its call weights), `runtime/tests/runtime.rs` (its tests) and a `README.md`. The SDK comes from its git
-repository, pinned by the workspace's `Cargo.lock`: `--sdk-git <url>` (or `TOG_SDK_REPO`) names
+(its call weights), `runtime/tests/runtime.rs` (its tests) and a `README.md`. The SDK comes from its public git
+repository, [theonlygrid-sdk](https://github.com/vahidzekic/theonlygrid-sdk), pinned by the workspace's `Cargo.lock`: `--sdk-git <url>` (or `TOG_SDK_REPO`) names
 another repository or a mirror, `--sdk-rev` a commit or tag, and `--sdk <checkout>` builds against a
 local checkout instead.
 

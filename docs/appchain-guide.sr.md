@@ -48,8 +48,8 @@ cd mychain
 ```
 
 `tog new` pravi Cargo workspace: `runtime/src/lib.rs` (runtime), `runtime/src/weights.rs` (težine
-poziva), `runtime/tests/runtime.rs` (testovi) i `README.md`. SDK dolazi iz svog git
-repozitorijuma, a commit drži `Cargo.lock` workspace-a: `--sdk-git <url>` (ili `TOG_SDK_REPO`) bira
+poziva), `runtime/tests/runtime.rs` (testovi) i `README.md`. SDK dolazi iz svog javnog git
+repozitorijuma, [theonlygrid-sdk](https://github.com/vahidzekic/theonlygrid-sdk), a commit drži `Cargo.lock` workspace-a: `--sdk-git <url>` (ili `TOG_SDK_REPO`) bira
 drugi repozitorijum ili mirror, `--sdk-rev` commit ili tag, a sa `--sdk <checkout>` build ide nad
 lokalnom kopijom.
 
